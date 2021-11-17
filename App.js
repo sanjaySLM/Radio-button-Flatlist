@@ -9,67 +9,39 @@ import RadioForm, {
 } from "react-native-simple-radio-button";
 
 export default function App() {
-  const renderedArray = [
+  
+  const array = [
     {
-      optionids: [
+      questionId: 1,
+      question: "HOW ARE YOU?",
+      Options: [
         {
-          value: 1,
-          label: "Yes",
-          questionid: 1,
+          label: "Fine",
+          value: "Yes",
+          questionId: 1,
         },
         {
-          value: 2,
-          label: "No",
-          questionid: 1,
-        },
-        {
-          value: 3,
-          label: "Null",
-          questionid: 1,
-        },
+          label: "Bad",
+          value: "No",
+          questionId: 1,
+        }
       ],
-      questionid: 1,
-      questionname:
-        "Did you encounter any navigational problem during the tenure onboard?",
     },
     {
-      optionids: [
+      questionId: 2,
+      question: "HOW IS YOUR DAY?",
+      Options: [
         {
-          value: 4,
-          label: "Yes",
-          questionid: 2,
+          label: "Fine",
+          value: "Yes",
+          questionId: 2,
         },
         {
-          value: 5,
-          label: "No",
-          questionid: 2,
-        },
-        {
-          value: 6,
-          label: "null",
-          questionid: 2,
-        },
+          label: "Bad",
+          value: "No",
+          questionId: 2,
+        }
       ],
-      questionid: 2,
-      questionname:
-        "Did you encounter any incidents relating to Cargo shortages and/or Cargo problems during the tenure onboard?",
-    },
-    {
-      optionids: [
-        {
-          value: 7,
-          label: "Yes",
-          questionid: 3,
-        },
-        {
-          value: 8,
-          label: "No",
-          questionid: 3, 
-        },
-      ],
-      questionid: 3,
-      questionname:
-        "How was your relationship with the vessel's owners (if interacted)?",
     },
   ];
   const radioValues = [];
@@ -77,8 +49,7 @@ export default function App() {
   const radioData = (option, questioData) => {
     const questionId = questioData.questionid ?? undefined;
     const foundIndex = radioValues.findIndex(
-      (element) =>
-         element.questionId === questionId
+      (element) => element.questionId === questionId
     );
     console.log(foundIndex);
     if (foundIndex !== -1) {
@@ -92,10 +63,10 @@ export default function App() {
   const renderGridItem = (itemData) => {
     return (
       <View style={{ marginTop: 50 }}>
-        <Text>{itemData.item.questionname}</Text>
+        <Text>{itemData.item.question}</Text>
         <View style={{ marginTop: 50 }}>
           <RadioForm
-            radio_props={itemData.item.optionids}
+            radio_props={itemData.item.Options}
             initial={0}
             onPress={(value) => {
               radioData(value, itemData.item);
@@ -119,7 +90,7 @@ export default function App() {
           ).toString()
         );
       }}
-      data={renderedArray}
+      data={array}
       renderItem={renderGridItem}
       numColumns={1}
     />
