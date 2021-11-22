@@ -1,102 +1,100 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
-import RadioForm from "react-native-simple-radio-button";
+import { Text, StyleSheet, View } from "react-native";
+import { RadioButton } from "react-native-paper";
 
-export default function App() {
-  
-  const array = [
-    {
-      questionId: 1,
-      question: "HOW ARE YOU?",
-      Options: [
-        {
-          label: "Fine",
-          value: "Yes",
-          questionId: 1,
-        },
-        {
-          label: "Bad",
-          value: "No",
-          questionId: 1,
-        }
-      ],
-    },
-    {
-      questionId: 2,
-      question: "HOW IS YOUR DAY?",
-      Options: [
-        {
-          label: "Fine",
-          value: "Yes",
-          questionId: 2,
-        },
-        {
-          label: "Bad",
-          value: "No",
-          questionId: 2,
-        }
-      ],
-    },
-  ];
-  const radioValues = [];
+const products = [
+  {
+    id: 1,
+    title: "Soft Drinks",
+    data: [
+      {
+        label: "Coca Cola",
+        price: "500 KMF",
+      },
+      {
+        label: "Fanta",
+        price: "250 KMF",
+      },
+      {
+        label: "Sprite",
+        price: "200 KMF",
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: "Juices",
+    data: [
+      {
+        label: "Mango",
+        price: "500 KMF",
+      },
+      {
+        label: "Orange",
+        price: "250 KMF",
+      },
+      {
+        label: "Strawberry",
+        price: "200 KMF",
+      },
+    ],
+  },
+];
 
-  const radioData = (option, questioData) => {
-    const questionId = questioData.questionid ?? undefined;
-    const foundIndex = radioValues.findIndex(
-      (element) => element.questionId === questionId
-    );
-    console.log(foundIndex);
-    if (foundIndex !== -1) {
-      radioValues[foundIndex] = { option, questionId };
-    } else {
-      radioValues.push({ option, questionId });
+const DrinkSelector = () => {
+  const [state, setState] = useState();
+
+  const checkDrink = (drink, object) => {
+    var i;
+    for (i = 0; i < object.length; i++) {
+      if (object[i].isChecked === "checked") {
+        object[i].isChecked = "unchecked";
+      }
     }
-    console.log("---->", radioValues);
-  };
-
-  const renderGridItem = (itemData) => {
-    return (
-      <View style={{ marginTop: 50 }}>
-        <Text>{itemData.item.question}</Text>
-        <View style={{ marginTop: 50 }}>
-          <RadioForm
-            radio_props={itemData.item.Options}
-            initial={0}
-            onPress={(value) => {
-              radioData(value, itemData.item);
-            }}
-            // formHorizontal={true}
-            animation={true}
-          />
-        </View>
-      </View>
-    );
+    drink.isChecked = "checked";
+    setState({ refresh: true });
   };
 
   return (
-    <FlatList
-      //   ListHeaderComponent={renderGridHeader}
-      keyExtractor={() => {
-        return (
-          new Date().getTime().toString() +
-          Math.floor(
-            Math.random() * Math.floor(new Date().getTime())
-          ).toString()
-        );
+    <View
+      style={{
+        flex: 1,
+        marginTop: "10%",
+        padding: 20,
+        backgroundColor: "#f2f2f2",
       }}
-      data={array}
-      renderItem={renderGridItem}
-      numColumns={1}
-    />
+    >
+      {products.map((object, d) => (
+        <View key={d} style={{ justifyContent: "space-between" }}>
+          <Text style={{ fontSize: 18, marginBottom: 20 }}>{object.title}</Text>
+          {object.data.map((drink, i) => (
+            <View key={i} style={styles.drinkCard}>
+              <RadioButton
+                value={drink.price}
+                status={drink.isChecked}
+                onPress={() => checkDrink(drink, object.data)}
+              />
+              <Text style={{ fontSize: 20, paddingLeft: 10 }}>
+                {drink.label}
+              </Text>
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
   );
-}
+};
 
+export default DrinkSelector;
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
+  drinkCard: {
+    paddingLeft: 6,
     alignItems: "center",
-    justifyContent: "center",
+    flexDirection: "row",
+    marginBottom: 16,
+    backgroundColor: "white",
+    height: 55,
+    elevation: 1,
+    borderRadius: 4,
   },
 });
